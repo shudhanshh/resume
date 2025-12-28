@@ -1,0 +1,44 @@
+name: Build PDF Resume
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'main.tex'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup TeX Live
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          latexmk_use_xelatex: false
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Copy PDF to public directory
+        run: |
+          mkdir -p public
+          cp main.pdf public/resume.pdf
+
+      - name: Commit and push PDF
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add public/resume.pdf
+          if ! git diff --staged --quiet; then
+            git commit -m "Update PDF resume [skip ci]"
+            git push
+          fi
+
