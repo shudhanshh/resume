@@ -100,7 +100,7 @@
       "domain": "Enterprise Networking and IoT",
       "responsibilities": [
         "Built ground-up multi-cloud and multi-tenant infrastructure supporting 50+ microservices with GitOps and security-first design",
-        "Architected SOC 2 compliance workflows and mentored 8+ engineers on cloud-native best practices",
+        "As an individual contributor, architected SOC 2 compliance workflows and mentored 8+ engineers on cloud-native best practices",
         "Developed MLOps pipelines using Kubeflow, MLflow, and Apache Airflow on Google Kubernetes Engine (GKE) with Seldon for real-time analytics",
         "Defined platform architecture standards (networking, IAM, GitOps, tenancy) adopted across product teams"
       ]
