@@ -215,6 +215,9 @@ body {
 .section-content {
     color: var(--text-secondary);
     line-height: 1.7;
+    display: block;
+    opacity: 1;
+    visibility: visible;
 }
 
 /* ============================================
@@ -317,8 +320,9 @@ body {
     position: relative;
     padding-left: var(--spacing-lg);
     min-height: 100px;
-    opacity: 1;
-    visibility: visible;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .timeline::before {
@@ -335,9 +339,10 @@ body {
     position: relative;
     margin-bottom: var(--spacing-lg);
     padding-bottom: var(--spacing-lg);
-    opacity: 1;
-    visibility: visible;
-    display: block;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    min-height: 50px;
 }
 
 .timeline-item:last-child {
@@ -379,9 +384,10 @@ body {
     border-radius: 6px;
     border: 1px solid var(--border-color);
     transition: all 0.2s;
-    opacity: 1;
-    visibility: visible;
-    display: block;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    min-height: 50px;
 }
 
 .timeline-content:hover {
