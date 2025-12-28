@@ -49,19 +49,28 @@ const Experience = () => {
   }
 
   return (
-    <section className="resume-section" ref={sectionRef}>
+    <section className="resume-section" ref={sectionRef} style={{ display: 'block', opacity: 1 }}>
       <div className="section-header">
         <h2 className="section-title">
           <span className="title-text">Professional Experience</span>
           <span className="title-line"></span>
         </h2>
       </div>
-      <div className="section-content">
-        <div className="timeline">
-          {experience && experience.length > 0 ? experience.map((exp, index) => (
-            <div key={index} className="timeline-item">
+      <div className="section-content" style={{ display: 'block', opacity: 1, minHeight: '200px' }}>
+        <div className="timeline" style={{ minHeight: '200px', display: 'block', opacity: 1, visibility: 'visible', position: 'relative' }}>
+          {experience && experience.length > 0 ? experience.map((exp, index) => {
+            if (!exp) {
+              console.warn('Empty experience at index:', index)
+              return null
+            }
+            if (!exp.responsibilities || !Array.isArray(exp.responsibilities) || exp.responsibilities.length === 0) {
+              console.warn('Invalid responsibilities at index:', index, exp)
+              return null
+            }
+            return (
+            <div key={`exp-${index}`} className="timeline-item" style={{ display: 'block', opacity: 1, visibility: 'visible', position: 'relative', marginBottom: '1.5rem' }}>
               <div className="timeline-marker"></div>
-              <div className="timeline-content">
+              <div className="timeline-content" style={{ display: 'block', opacity: 1, visibility: 'visible', background: '#f8fafc', padding: '0.75rem', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
                 <div className="experience-header">
                   <div className="experience-title-group">
                     <h3 className="job-title">{exp.title}</h3>
@@ -102,7 +111,8 @@ const Experience = () => {
                 </ul>
               </div>
             </div>
-          )) : <p>Loading experience data...</p>}
+            )
+          }) : <p>Loading experience data... Experience length: {experience?.length || 0}</p>}
         </div>
       </div>
     </section>
