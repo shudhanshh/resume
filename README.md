@@ -1,6 +1,6 @@
 # Resume - Shudhanshu Badkur
 
-This repository hosts my professional resume, available as a modern, responsive web page on GitHub Pages.
+This repository hosts my professional resume, built with **React** and **Vite** for a modern, maintainable codebase.
 
 ## 🌐 Live Resume
 
@@ -8,40 +8,86 @@ Visit the live resume at: [https://shudhanshh.github.io/resume/](https://shudhan
 
 ## 📄 About
 
-This is a public repository containing my professional resume/CV. The resume is built with modern HTML and CSS, featuring:
+This is a public repository containing my professional resume/CV. The resume is built with modern web technologies, featuring:
 
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- **React Components**: Modular, reusable components for easy maintenance
+- **Vite**: Lightning-fast build tool and dev server
 - **Modern UI**: Clean, professional design with smooth animations
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- **Performance Optimized**: Fast loading and optimized bundle size
 - **Print-Friendly**: Optimized for printing
 - **Accessible**: Semantic HTML and proper contrast ratios
-- **Fast Loading**: Lightweight and optimized for performance
 
 ## 🛠️ Technologies Used
 
-- HTML5 (Semantic Markup)
-- CSS3 (Modern Features: Grid, Flexbox, Animations, Gradients)
-- Vanilla JavaScript (Scroll Animations, Intersection Observer)
-- Google Fonts (Inter, Playfair Display)
-- GitHub Actions (Automated Deployment)
+- **React 18** - Modern React with hooks
+- **Vite** - Next-generation frontend tooling
+- **CSS3** - Modern features (Grid, Flexbox, Animations, Gradients)
+- **JavaScript (ES6+)** - Modern JavaScript features
+- **Google Fonts** - Inter & Playfair Display
+- **GitHub Actions** - Automated CI/CD deployment
 
-## 📝 Updating the Resume
+## 🚀 Getting Started
 
-To update the resume:
+### Prerequisites
 
-1. Edit `index.html` to update content
-2. Modify `styles.css` to change styling
-3. Commit and push changes to the repository
-4. GitHub Pages will automatically rebuild the site
+- Node.js 18+ and npm
 
-## 🚀 GitHub Pages Setup
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## 📝 Project Structure
+
+```
+resume/
+├── src/
+│   ├── components/       # React components
+│   │   ├── Header.jsx
+│   │   ├── Summary.jsx
+│   │   ├── Skills.jsx
+│   │   ├── Experience.jsx
+│   │   ├── Education.jsx
+│   │   └── Footer.jsx
+│   ├── styles/          # CSS styles
+│   │   └── index.css
+│   ├── App.jsx          # Main app component
+│   └── main.jsx         # Entry point
+├── .github/
+│   └── workflows/       # GitHub Actions
+│       └── deploy.yml
+├── index.html           # HTML template
+├── vite.config.js       # Vite configuration
+└── package.json         # Dependencies
+```
+
+## 🚀 GitHub Pages Deployment
 
 This repository uses **GitHub Actions** for automated deployment to GitHub Pages.
 
 ### Automatic Deployment
 
-The site automatically deploys when you push to the `main` branch. No manual setup needed!
+The site automatically deploys when you push to the `main` branch. The workflow:
 
-### Manual Setup (if needed)
+1. Checks out the code
+2. Sets up Node.js
+3. Installs dependencies
+4. Builds the React app with Vite
+5. Deploys to GitHub Pages
+
+### Manual Setup
 
 1. Go to your repository settings
 2. Navigate to "Pages" in the left sidebar
@@ -52,20 +98,13 @@ The site automatically deploys when you push to the `main` branch. No manual set
 ### Features
 
 - ✅ Automated deployment via GitHub Actions
+- ✅ React component-based architecture
+- ✅ Fast Vite builds
 - ✅ Modern, responsive design
 - ✅ Smooth scroll animations
 - ✅ Professional color scheme
 - ✅ Print-friendly styles
 - ✅ Mobile-optimized
-
-## 📋 Structure
-
-```
-resume/
-├── index.html      # Main HTML file
-├── styles.css      # Stylesheet
-└── README.md       # This file
-```
 
 ## 📧 Contact
 
@@ -75,5 +114,4 @@ resume/
 
 ---
 
-*Last updated: Automatically updated on each page load*
-
+*Built with React + Vite. Last updated automatically on each deployment.*
