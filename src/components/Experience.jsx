@@ -5,10 +5,14 @@ const Experience = () => {
   const sectionRef = useRef(null)
   const { experience } = resumeData
 
+  // Debug: Log experience data
+  console.log('Experience component - experience data:', experience)
+  console.log('Experience component - experience length:', experience?.length)
+
   // Safety check
   if (!experience || experience.length === 0) {
     return (
-      <section className="resume-section" ref={sectionRef} data-animate="fade-up">
+      <section className="resume-section" ref={sectionRef}>
         <div className="section-header">
           <h2 className="section-title">
             <span className="title-text">Professional Experience</span>
@@ -16,59 +20,18 @@ const Experience = () => {
           </h2>
         </div>
         <div className="section-content">
-          <p>No experience data available.</p>
+          <p>No experience data available. Experience: {JSON.stringify(experience)}</p>
         </div>
       </section>
     )
   }
 
   useEffect(() => {
-    // Add animation class immediately for elements in viewport
+    // Ensure content is visible immediately
     if (sectionRef.current) {
-      const rect = sectionRef.current.getBoundingClientRect()
-      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0
-      if (isInViewport) {
-        setTimeout(() => {
-          sectionRef.current?.classList.add('animated')
-          const timelineItems = sectionRef.current?.querySelectorAll('.timeline-item')
-          timelineItems?.forEach((item, index) => {
-            setTimeout(() => {
-              item.classList.add('animated')
-            }, index * 100)
-          })
-        }, 50)
-      }
+      sectionRef.current.classList.add('animated')
     }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.classList.add('animated')
-              const timelineItems = entry.target.querySelectorAll('.timeline-item')
-              timelineItems.forEach((item, index) => {
-                setTimeout(() => {
-                  item.classList.add('animated')
-                }, index * 100)
-              })
-            }, 50)
-          }
-        })
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
-      }
-    }
-  }, [])
+  }, [experience])
 
   // Format responsibilities with HTML support for <strong> tags
   const formatResponsibility = (text) => {
@@ -86,7 +49,7 @@ const Experience = () => {
   }
 
   return (
-    <section className="resume-section" ref={sectionRef} data-animate="fade-up">
+    <section className="resume-section" ref={sectionRef}>
       <div className="section-header">
         <h2 className="section-title">
           <span className="title-text">Professional Experience</span>
@@ -95,7 +58,7 @@ const Experience = () => {
       </div>
       <div className="section-content">
         <div className="timeline">
-          {experience.map((exp, index) => (
+          {experience && experience.length > 0 ? experience.map((exp, index) => (
             <div key={index} className="timeline-item">
               <div className="timeline-marker"></div>
               <div className="timeline-content">
@@ -139,7 +102,7 @@ const Experience = () => {
                 </ul>
               </div>
             </div>
-          ))}
+          )) : <p>Loading experience data...</p>}
         </div>
       </div>
     </section>
