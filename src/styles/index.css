@@ -393,6 +393,31 @@ body {
     align-items: center;
     gap: var(--spacing-xs);
     flex-wrap: wrap;
+    margin-bottom: var(--spacing-xs);
+}
+
+.company-product-domain {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-style: italic;
+    margin-top: var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+    line-height: 1.5;
+}
+
+.product-info,
+.domain-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.separator {
+    color: var(--text-light);
+    opacity: 0.5;
 }
 
 .yc-badge {

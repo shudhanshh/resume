@@ -72,6 +72,13 @@ const Experience = () => {
                         <span className="yc-badge">YC {exp.ycBatch}</span>
                       )}
                     </p>
+                    {(exp.product || exp.domain) && (
+                      <p className="company-product-domain">
+                        {exp.product && <span className="product-info">📦 {exp.product}</span>}
+                        {exp.product && exp.domain && <span className="separator"> • </span>}
+                        {exp.domain && <span className="domain-info">🏢 {exp.domain}</span>}
+                      </p>
+                    )}
                   </div>
                   <div className="experience-meta">
                     <span className="location">{exp.location}</span>

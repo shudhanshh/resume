@@ -86,19 +86,22 @@ function parseLaTeX(texContent) {
   if (experienceSection) {
     const expText = experienceSection[0];
     
-    // Match each job entry - improved regex
-    const jobPattern = /\\textbf\{([^}]+)\},\s*\\textit\{([^}]+)\}[\s\S]*?\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/g;
+    // Match each job entry - improved regex to include product/domain line
+    const jobPattern = /\\textbf\{([^}]+)\},\s*\\textit\{([^}]+)\}\s*\\\\\s*\\textit\{([^}]+)\}[\s\S]*?\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/g;
     let match;
     while ((match = jobPattern.exec(expText)) !== null) {
       const title = match[1].trim();
       const companyLocationDate = match[2].trim();
+      const productDomain = match[3].trim();
       
       // Parse company, location, date
       // Format: "Company, Location, Date Range"
+      // Need to handle cases like "Bengaluru, India" - split by last two commas
       const parts = companyLocationDate.split(',').map(s => s.trim());
       let company = parts[0] || '';
-      let location = parts[1] || '';
-      let dateRange = parts[2] || '';
+      // Last part is date range, second-to-last is country, combine location parts
+      const dateRange = parts[parts.length - 1] || '';
+      const location = parts.slice(1, -1).join(', ') || '';
       
       // Handle YC badge
       const ycMatch = company.match(/\(YC\s+([^)]+)\)/);
@@ -107,11 +110,19 @@ function parseLaTeX(texContent) {
         company = company.replace(/\s*\(YC[^)]+\)/, '').trim();
       }
       
+      // Parse product and domain from "Product: X | Domain: Y"
+      let product = '';
+      let domain = '';
+      const productMatch = productDomain.match(/Product:\s*([^|]+)/);
+      const domainMatch = productDomain.match(/Domain:\s*(.+)/);
+      if (productMatch) product = productMatch[1].trim();
+      if (domainMatch) domain = domainMatch[1].trim();
+      
       // Extract responsibilities
       const responsibilities = [];
       const itemPattern = /\\item\s*([^\n]+(?:\n(?!\\item|\\end|\\vspace)[^\n]+)*)/g;
       let itemMatch;
-      while ((itemMatch = itemPattern.exec(match[3])) !== null) {
+      while ((itemMatch = itemPattern.exec(match[4])) !== null) {
         responsibilities.push(itemMatch[1].replace(/\s+/g, ' ').trim());
       }
 
@@ -122,6 +133,8 @@ function parseLaTeX(texContent) {
         dateRange,
         isYC,
         ycBatch: ycMatch ? ycMatch[1] : null,
+        product,
+        domain,
         responsibilities
       });
     }
