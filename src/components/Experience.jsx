@@ -6,17 +6,36 @@ const Experience = () => {
   const { experience } = resumeData
 
   useEffect(() => {
+    // Add animation class immediately for elements in viewport
+    if (sectionRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect()
+      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0
+      if (isInViewport) {
+        setTimeout(() => {
+          sectionRef.current?.classList.add('animated')
+          const timelineItems = sectionRef.current?.querySelectorAll('.timeline-item')
+          timelineItems?.forEach((item, index) => {
+            setTimeout(() => {
+              item.classList.add('animated')
+            }, index * 100)
+          })
+        }, 50)
+      }
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animated')
-            const timelineItems = entry.target.querySelectorAll('.timeline-item')
-            timelineItems.forEach((item, index) => {
-              setTimeout(() => {
-                item.classList.add('animated')
-              }, index * 100)
-            })
+            setTimeout(() => {
+              entry.target.classList.add('animated')
+              const timelineItems = entry.target.querySelectorAll('.timeline-item')
+              timelineItems.forEach((item, index) => {
+                setTimeout(() => {
+                  item.classList.add('animated')
+                }, index * 100)
+              })
+            }, 50)
           }
         })
       },
@@ -67,7 +86,18 @@ const Experience = () => {
                   <div className="experience-title-group">
                     <h3 className="job-title">{exp.title}</h3>
                     <p className="company-name">
-                      {exp.company}
+                      {exp.website ? (
+                        <a 
+                          href={exp.website} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="company-link"
+                        >
+                          {exp.company}
+                        </a>
+                      ) : (
+                        exp.company
+                      )}
                       {exp.isYC && (
                         <span className="yc-badge">YC {exp.ycBatch}</span>
                       )}

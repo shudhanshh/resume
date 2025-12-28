@@ -36,8 +36,9 @@ function parseLaTeX(texContent) {
     location: locationMatch ? locationMatch[1].trim() : ''
   };
 
-  // Extract Professional Summary - ATS format
-  const summaryMatch = texContent.match(/\\section\*\{PROFESSIONAL SUMMARY\}[\s\S]*?\n([^\n]+(?:\n(?!\\vspace|\\section)[^\n]+)*)/i);
+  // Extract Professional Summary - Updated format
+  const summaryMatch = texContent.match(/\\noindent\\textbf\{\\large PROFESSIONAL SUMMARY\}[\s\S]*?\\\\([\s\S]*?)(?=\\vspace|\\noindent\\textbf|$)/i) ||
+                       texContent.match(/\\section\*\{PROFESSIONAL SUMMARY\}[\s\S]*?\n([^\n]+(?:\n(?!\\vspace|\\section)[^\n]+)*)/i);
   if (summaryMatch) {
     data.summary = summaryMatch[1]
       .replace(/\\%/g, '%')
@@ -45,8 +46,9 @@ function parseLaTeX(texContent) {
       .trim();
   }
 
-  // Extract Technical Skills - ATS format
-  const skillsSection = texContent.match(/\\section\*\{TECHNICAL SKILLS\}[\s\S]*?\\section\*\{PROFESSIONAL EXPERIENCE\}/i);
+  // Extract Technical Skills - Updated format
+  const skillsSection = texContent.match(/\\noindent\\textbf\{\\large TECHNICAL SKILLS\}[\s\S]*?\\noindent\\textbf\{\\large PROFESSIONAL EXPERIENCE\}/i) ||
+                        texContent.match(/\\section\*\{TECHNICAL SKILLS\}[\s\S]*?\\section\*\{PROFESSIONAL EXPERIENCE\}/i);
   if (skillsSection) {
     const skillsText = skillsSection[0];
     
@@ -79,21 +81,25 @@ function parseLaTeX(texContent) {
     }
   }
 
-  // Extract Professional Experience - ATS format
-  const experienceSection = texContent.match(/\\section\*\{PROFESSIONAL EXPERIENCE\}[\s\S]*?\\section\*\{EDUCATION/i);
+  // Extract Professional Experience - Updated format
+  const experienceSection = texContent.match(/\\noindent\\textbf\{\\large PROFESSIONAL EXPERIENCE\}[\s\S]*?\\noindent\\textbf\{\\large EDUCATION/i) ||
+                            texContent.match(/\\section\*\{PROFESSIONAL EXPERIENCE\}[\s\S]*?\\section\*\{EDUCATION/i);
   if (experienceSection) {
     const expText = experienceSection[0];
     
-    // Match each job entry - ATS-friendly format: Title | Company | Location \n Date \n Product/Domain
-    const jobPattern = /\\textbf\{([^}]+)\}\s*\|\s*([^|]+)\s*\|\s*([^\\]+)\s*\\\\\s*\\textit\{([^}]+)\}[\s\S]*?Product:\s*([^|]+)\s*\|\s*Domain:\s*([^\n\\]+)[\s\S]*?\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/g;
+    // Match each job entry - Updated format: Title | Company | Location \n Date | Product/Domain
+    const jobPattern = /\\textbf\{([^}]+)\}\s*\|\s*\\textbf\{([^}]+)\}\s*\|\s*([^\\]+)\s*\\\\\s*\\textit\{([^}]+)\}\s*\|\s*([^\n\\]+)[\s\S]*?\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/g;
     let match;
     while ((match = jobPattern.exec(expText)) !== null) {
       const title = match[1].trim();
       const company = match[2].trim();
       const location = match[3].trim();
       const dateRange = match[4].trim();
-      const product = match[5].trim();
-      const domain = match[6].trim();
+      const productDomain = match[5].trim();
+      // Split product and domain if separated by |
+      const productDomainParts = productDomain.split('|').map(s => s.trim());
+      const product = productDomainParts[0] || '';
+      const domain = productDomainParts[1] || '';
       
       // Handle YC badge in company name
       const ycMatch = company.match(/\(Y Combinator\s+([^)]+)\)/i) || company.match(/\(YC\s+([^)]+)\)/i);
@@ -111,7 +117,7 @@ function parseLaTeX(texContent) {
       const responsibilities = [];
       const itemPattern = /\\item\s*([^\n]+(?:\n(?!\\item|\\end|\\vspace)[^\n]+)*)/g;
       let itemMatch;
-      while ((itemMatch = itemPattern.exec(match[7])) !== null) {
+      while ((itemMatch = itemPattern.exec(match[6])) !== null) {
         let resp = itemMatch[1].replace(/\\%/g, '%').replace(/\s+/g, ' ').trim();
         responsibilities.push(resp);
       }
@@ -130,8 +136,9 @@ function parseLaTeX(texContent) {
     }
   }
 
-  // Extract Education and Certifications - ATS format
-  const eduSection = texContent.match(/\\section\*\{EDUCATION AND CERTIFICATIONS\}[\s\S]*?\\end\{document\}/i);
+  // Extract Education and Certifications - Updated format
+  const eduSection = texContent.match(/\\noindent\\textbf\{\\large EDUCATION AND CERTIFICATIONS\}[\s\S]*?\\end\{document\}/i) ||
+                    texContent.match(/\\section\*\{EDUCATION AND CERTIFICATIONS\}[\s\S]*?\\end\{document\}/i);
   if (eduSection) {
     const eduText = eduSection[0];
     

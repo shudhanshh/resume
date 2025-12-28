@@ -68,6 +68,8 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     background-attachment: fixed;
     padding: var(--spacing-lg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ============================================
@@ -81,6 +83,7 @@ body {
     box-shadow: var(--shadow-lg);
     border-radius: 8px;
     overflow: hidden;
+    position: relative;
 }
 
 /* ============================================
@@ -92,6 +95,7 @@ body {
     color: white;
     padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
     position: relative;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-container {
@@ -109,6 +113,7 @@ body {
     font-weight: 700;
     margin-bottom: var(--spacing-xs);
     letter-spacing: -0.02em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .title {
@@ -190,6 +195,7 @@ body {
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: var(--spacing-sm);
+    letter-spacing: -0.01em;
 }
 
 .title-text {
@@ -203,6 +209,7 @@ body {
     flex: 1;
     height: 2px;
     background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
+    border-radius: 1px;
 }
 
 .section-content {
@@ -214,10 +221,19 @@ body {
    Summary - Compact
    ============================================ */
 
+.summary-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.summary-section .section-header {
+    margin-bottom: var(--spacing-sm);
+}
+
 .summary-text {
-    font-size: 0.95rem;
-    line-height: 1.7;
+    font-size: 0.9rem;
+    line-height: 1.5;
     color: var(--text-secondary);
+    margin: 0;
 }
 
 .summary-text strong {
@@ -396,6 +412,19 @@ body {
     margin-bottom: var(--spacing-xs);
 }
 
+.company-link {
+    color: var(--primary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid transparent;
+}
+
+.company-link:hover {
+    color: var(--primary-dark);
+    border-bottom-color: var(--primary);
+    text-decoration: none;
+}
+
 .company-product-domain {
     font-size: 0.8rem;
     color: var(--text-light);
@@ -551,15 +580,41 @@ body {
 }
 
 /* ============================================
-   Animations
+   Animations - Progressive Enhancement
    ============================================ */
 
+/* Content is visible by default - no hiding */
 [data-animate] {
-    opacity: 0;
+    opacity: 1;
+    transform: translateY(0);
 }
 
+/* Enhanced animation when JavaScript adds the animated class */
 [data-animate].animated {
-    animation: fadeUp 0.4s ease-out forwards;
+    animation: fadeUp 0.4s ease-out;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* For elements that should animate in on scroll */
+.resume-section[data-animate] {
+    opacity: 1;
+}
+
+/* Smooth transitions */
+@media (prefers-reduced-motion: no-preference) {
+    [data-animate] {
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    }
 }
 
 @keyframes fadeUp {
@@ -659,39 +714,313 @@ body {
 }
 
 /* ============================================
-   Print Styles
+   Print Styles - Professional PDF Template
    ============================================ */
 
 @media print {
-    body {
-        background: white;
-        padding: 0;
+    @page {
+        size: letter;
+        margin: 0.5in;
+    }
+    
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    html, body {
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 11pt;
+        line-height: 1.4;
     }
     
     .resume-wrapper {
-        box-shadow: none;
-        border-radius: 0;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
+    /* Header - Professional Print Style */
     .resume-header {
         background: var(--primary) !important;
+        color: white !important;
+        padding: 0.75in 0.5in 0.5in !important;
+        margin-bottom: 0.3in !important;
+        page-break-inside: avoid;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
     
-    .resume-section {
+    .name {
+        font-size: 28pt !important;
+        margin-bottom: 0.1in !important;
+        letter-spacing: -0.5px;
+    }
+    
+    .title {
+        font-size: 12pt !important;
+        margin-bottom: 0.15in !important;
+        opacity: 1 !important;
+    }
+    
+    .contact-info {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 0.2in !important;
+        margin-top: 0.15in !important;
+    }
+    
+    .contact-link {
+        background: rgba(255, 255, 255, 0.15) !important;
+        padding: 0.05in 0.1in !important;
+        border-radius: 3px !important;
+        font-size: 9pt !important;
         page-break-inside: avoid;
+    }
+    
+    .contact-link:hover {
+        transform: none !important;
+    }
+    
+    /* Main Content */
+    .resume-main {
+        padding: 0.4in 0.5in !important;
+    }
+    
+    /* Sections */
+    .resume-section {
+        margin-bottom: 0.25in !important;
+        page-break-inside: avoid;
+        orphans: 3;
+        widows: 3;
+    }
+    
+    .resume-section:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    .section-header {
+        margin-bottom: 0.15in !important;
+        page-break-after: avoid;
+    }
+    
+    .section-title {
+        font-size: 14pt !important;
+        margin-bottom: 0.1in !important;
+        page-break-after: avoid;
+    }
+    
+    .title-line {
+        height: 1.5px !important;
+    }
+    
+    .section-content {
+        font-size: 10pt !important;
+        line-height: 1.5 !important;
+    }
+    
+    /* Summary */
+    .summary-section {
+        margin-bottom: 0.2in !important;
+    }
+    
+    .summary-text {
+        font-size: 10pt !important;
+        line-height: 1.5 !important;
+        text-align: justify;
+    }
+    
+    /* Skills */
+    .skills-container {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.15in !important;
+        page-break-inside: avoid;
+    }
+    
+    .skill-group {
+        background: var(--bg-secondary) !important;
+        padding: 0.15in !important;
+        border: 1px solid var(--border-color) !important;
+        page-break-inside: avoid;
+    }
+    
+    .skill-group:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    .skill-group-title {
+        font-size: 9pt !important;
+        margin-bottom: 0.1in !important;
+    }
+    
+    .skill-tag {
+        font-size: 8pt !important;
+        padding: 0.05in 0.1in !important;
+        border: 1px solid var(--border-color) !important;
+    }
+    
+    .skill-tag:hover {
+        transform: none !important;
+    }
+    
+    /* Experience Timeline */
+    .timeline {
+        padding-left: 0.3in !important;
+    }
+    
+    .timeline::before {
+        left: 0.08in !important;
+        width: 1.5px !important;
     }
     
     .timeline-item {
+        margin-bottom: 0.2in !important;
+        padding-bottom: 0.2in !important;
         page-break-inside: avoid;
     }
     
-    .resume-footer {
-        display: none;
+    .timeline-item:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
     }
     
+    .timeline-marker {
+        left: -0.25in !important;
+        width: 10px !important;
+        height: 10px !important;
+        border-width: 1.5px !important;
+    }
+    
+    .timeline-content {
+        background: var(--bg-secondary) !important;
+        padding: 0.15in !important;
+        border: 1px solid var(--border-color) !important;
+        page-break-inside: avoid;
+    }
+    
+    .timeline-content:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    .job-title {
+        font-size: 11pt !important;
+        margin-bottom: 0.05in !important;
+    }
+    
+    .company-name {
+        font-size: 10pt !important;
+        margin-bottom: 0.05in !important;
+    }
+    
+    .company-product-domain {
+        font-size: 8.5pt !important;
+    }
+    
+    .date-range {
+        font-size: 9pt !important;
+    }
+    
+    .location {
+        font-size: 8.5pt !important;
+    }
+    
+    .job-responsibilities {
+        margin-top: 0.1in !important;
+    }
+    
+    .job-responsibilities li {
+        font-size: 9.5pt !important;
+        line-height: 1.5 !important;
+        margin-bottom: 0.08in !important;
+        padding-left: 0.2in !important;
+    }
+    
+    .job-responsibilities li::before {
+        font-size: 9pt !important;
+        left: 0.05in !important;
+    }
+    
+    /* Education & Certifications */
+    .education-cert-container {
+        grid-template-columns: 1fr 1.5fr !important;
+        gap: 0.2in !important;
+        page-break-inside: avoid;
+    }
+    
+    .education-section,
+    .certifications-section {
+        background: var(--bg-secondary) !important;
+        padding: 0.15in !important;
+        border: 1px solid var(--border-color) !important;
+        page-break-inside: avoid;
+    }
+    
+    .subsection-title {
+        font-size: 10pt !important;
+        margin-bottom: 0.1in !important;
+    }
+    
+    .education-detail {
+        font-size: 9.5pt !important;
+        line-height: 1.5 !important;
+    }
+    
+    .cert-badges {
+        gap: 0.1in !important;
+    }
+    
+    .cert-badge {
+        font-size: 8pt !important;
+        padding: 0.08in 0.12in !important;
+    }
+    
+    .cert-badge:hover {
+        transform: none !important;
+    }
+    
+    .yc-badge {
+        font-size: 7pt !important;
+        padding: 0.05in 0.1in !important;
+    }
+    
+    /* Footer */
+    .resume-footer {
+        display: none !important;
+    }
+    
+    /* Animations */
     [data-animate] {
         opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+    }
+    
+    /* Remove hover effects */
+    *:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Links */
+    a {
+        color: inherit !important;
+        text-decoration: none !important;
+    }
+    
+    /* Ensure proper page breaks */
+    .resume-section + .resume-section {
+        page-break-before: auto;
+    }
+    
+    /* Optimize for single page if possible */
+    .resume-wrapper {
+        max-height: 11in;
     }
 }

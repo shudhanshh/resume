@@ -6,11 +6,24 @@ const Education = () => {
   const { education, certifications } = resumeData
 
   useEffect(() => {
+    // Add animation class immediately for elements in viewport
+    if (sectionRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect()
+      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0
+      if (isInViewport) {
+        setTimeout(() => {
+          sectionRef.current?.classList.add('animated')
+        }, 50)
+      }
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animated')
+            setTimeout(() => {
+              entry.target.classList.add('animated')
+            }, 50)
           }
         })
       },

@@ -6,17 +6,36 @@ const Skills = () => {
   const { skills } = resumeData
 
   useEffect(() => {
+    // Add animation class immediately for elements in viewport
+    if (sectionRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect()
+      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0
+      if (isInViewport) {
+        setTimeout(() => {
+          sectionRef.current?.classList.add('animated')
+          const skillGroups = sectionRef.current?.querySelectorAll('.skill-group')
+          skillGroups?.forEach((group, index) => {
+            setTimeout(() => {
+              group.classList.add('animated')
+            }, index * 50)
+          })
+        }, 50)
+      }
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animated')
-            const skillGroups = entry.target.querySelectorAll('.skill-group')
-            skillGroups.forEach((group, index) => {
-              setTimeout(() => {
-                group.classList.add('animated')
-              }, index * 50)
-            })
+            setTimeout(() => {
+              entry.target.classList.add('animated')
+              const skillGroups = entry.target.querySelectorAll('.skill-group')
+              skillGroups.forEach((group, index) => {
+                setTimeout(() => {
+                  group.classList.add('animated')
+                }, index * 50)
+              })
+            }, 50)
           }
         })
       },
