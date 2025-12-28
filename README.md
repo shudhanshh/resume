@@ -18,10 +18,11 @@ This is a public repository containing my professional resume/CV. The resume is 
 
 ## 🛠️ Technologies Used
 
-- HTML5
-- CSS3 (with CSS Variables)
-- Vanilla JavaScript
-- Google Fonts (Inter)
+- HTML5 (Semantic Markup)
+- CSS3 (Modern Features: Grid, Flexbox, Animations, Gradients)
+- Vanilla JavaScript (Scroll Animations, Intersection Observer)
+- Google Fonts (Inter, Playfair Display)
+- GitHub Actions (Automated Deployment)
 
 ## 📝 Updating the Resume
 
@@ -34,13 +35,28 @@ To update the resume:
 
 ## 🚀 GitHub Pages Setup
 
-This repository is configured to work with GitHub Pages. To enable:
+This repository uses **GitHub Actions** for automated deployment to GitHub Pages.
+
+### Automatic Deployment
+
+The site automatically deploys when you push to the `main` branch. No manual setup needed!
+
+### Manual Setup (if needed)
 
 1. Go to your repository settings
 2. Navigate to "Pages" in the left sidebar
-3. Under "Source", select the branch (usually `main` or `master`)
-4. Click "Save"
+3. Under "Source", select **"GitHub Actions"** (not a branch)
+4. The workflow will automatically deploy your site
 5. Your resume will be available at `https://<username>.github.io/resume/`
+
+### Features
+
+- ✅ Automated deployment via GitHub Actions
+- ✅ Modern, responsive design
+- ✅ Smooth scroll animations
+- ✅ Professional color scheme
+- ✅ Print-friendly styles
+- ✅ Mobile-optimized
 
 ## 📋 Structure
 
