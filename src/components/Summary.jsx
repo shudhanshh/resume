@@ -36,7 +36,7 @@ const Summary = () => {
       </div>
       <div className="section-content">
         <p className="summary-text">
-          DevOps Architect / Staff Platform Engineer with <strong>8+ years</strong> of experience designing and scaling cloud-native, multi-tenant platforms for enterprise SaaS and fintech systems. Proven track record as both an <strong>individual contributor</strong> and <strong>technical leader</strong>, delivering platform architecture initiatives that achieved <strong>60% infrastructure cost savings</strong> (USD 1.4M+ monthly) while maintaining <strong>99.99% uptime</strong> for systems handling <strong>500K+ requests per minute</strong> and <strong>5M+ active users</strong>. Expert in Kubernetes, GitOps, multi-cloud strategy, and security compliance (ISO 27001, PCI-DSS, SOC 2), with strong leadership in mentoring engineers and driving org-wide infrastructure standards.
+          DevOps Architect / Staff Platform Engineer with <strong>8+ years</strong> designing and scaling cloud-native, multi-tenant platforms for enterprise SaaS and fintech. Proven track record as both <strong>individual contributor</strong> and <strong>technical leader</strong>, delivering <strong>60% infrastructure cost savings</strong> (USD 1.4M+ monthly) while maintaining <strong>99.99% uptime</strong> for systems handling <strong>500K+ requests/minute</strong> and <strong>5M+ active users</strong>. Expert in Kubernetes, GitOps, multi-cloud strategy, and security compliance (ISO 27001, PCI-DSS, SOC 2).
         </p>
       </div>
     </section>

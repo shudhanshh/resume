@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 const skillsData = [
   {
     title: 'Cloud & Platforms',
-    skills: ['AWS', 'GCP', 'Azure', 'Kubernetes (EKS, GKE)', 'Docker', 'Helm', 'Terraform', 'Terragrunt']
+    skills: ['AWS', 'GCP', 'Azure', 'Kubernetes', 'Docker', 'Helm', 'Terraform', 'Terragrunt']
   },
   {
     title: 'GitOps & CI/CD',
