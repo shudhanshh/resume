@@ -5,6 +5,23 @@ const Experience = () => {
   const sectionRef = useRef(null)
   const { experience } = resumeData
 
+  // Safety check
+  if (!experience || experience.length === 0) {
+    return (
+      <section className="resume-section" ref={sectionRef} data-animate="fade-up">
+        <div className="section-header">
+          <h2 className="section-title">
+            <span className="title-text">Professional Experience</span>
+            <span className="title-line"></span>
+          </h2>
+        </div>
+        <div className="section-content">
+          <p>No experience data available.</p>
+        </div>
+      </section>
+    )
+  }
+
   useEffect(() => {
     // Add animation class immediately for elements in viewport
     if (sectionRef.current) {
@@ -79,7 +96,7 @@ const Experience = () => {
       <div className="section-content">
         <div className="timeline">
           {experience.map((exp, index) => (
-            <div key={index} className="timeline-item" data-animate="fade-up">
+            <div key={index} className="timeline-item">
               <div className="timeline-marker"></div>
               <div className="timeline-content">
                 <div className="experience-header">
