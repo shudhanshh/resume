@@ -36,7 +36,8 @@
       "ELK Stack (Elasticsearch, Logstash, Kibana)",
       "Datadog",
       "Loki",
-      "VictoriaMetrics"
+      "VictoriaMetrics",
+      "Fluentd"
     ],
     "Data and MLOps": [
       "Kubeflow",
@@ -46,7 +47,9 @@
       "Google BigQuery",
       "PostgreSQL",
       "Redis",
-      "Seldon Core"
+      "Seldon Core",
+      "Restate",
+      "ClickHouse"
     ],
     "Programming Languages and Systems": [
       "Go",
