@@ -3,7 +3,9 @@ import resumeData from '../data/resumeData'
 
 const Experience = () => {
   const sectionRef = useRef(null)
-  const { experience } = resumeData
+  
+  // Access experience data - same pattern as other components
+  const experienceData = resumeData?.experience || []
 
   useEffect(() => {
     // Ensure content is visible immediately
@@ -23,9 +25,6 @@ const Experience = () => {
       return <span key={index}>{part}</span>;
     });
   }
-
-  // Ensure we have valid experience data
-  const experienceData = resumeData?.experience || experience || []
   
   if (!experienceData || !Array.isArray(experienceData) || experienceData.length === 0) {
     return (
