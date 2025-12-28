@@ -12,6 +12,42 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Helper function to clean LaTeX commands from text
+function cleanLaTeX(text) {
+  if (!text) return '';
+  
+  return text
+    // Remove LaTeX font size commands
+    .replace(/\\footnotesize\s*/g, '')
+    .replace(/\\small\s*/g, '')
+    .replace(/\\normalsize\s*/g, '')
+    .replace(/\\large\s*/g, '')
+    .replace(/\\Large\s*/g, '')
+    .replace(/\\LARGE\s*/g, '')
+    .replace(/\\huge\s*/g, '')
+    .replace(/\\Huge\s*/g, '')
+    // Remove textbf but keep content
+    .replace(/\\textbf\{([^}]+)\}/g, '$1')
+    // Remove textit but keep content
+    .replace(/\\textit\{([^}]+)\}/g, '$1')
+    // Remove other common LaTeX commands
+    .replace(/\\emph\{([^}]+)\}/g, '$1')
+    .replace(/\\text\{([^}]+)\}/g, '$1')
+    // Remove escaped characters
+    .replace(/\\%/g, '%')
+    .replace(/\\&/g, '&')
+    .replace(/\\#/g, '#')
+    .replace(/\\_/g, '_')
+    .replace(/\\\{/g, '{')
+    .replace(/\\\}/g, '}')
+    // Remove remaining LaTeX commands (generic)
+    .replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1')
+    .replace(/\\[a-zA-Z]+/g, '')
+    // Clean up whitespace
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function parseLaTeX(texContent) {
   const data = {
     contact: {},
@@ -23,27 +59,28 @@ function parseLaTeX(texContent) {
   };
 
   // Extract contact information - ATS-friendly format with pipe separators
-  const nameMatch = texContent.match(/\\textbf\{SHUDHANSHU BADKUR\}/i);
-  const contactLineMatch = texContent.match(/Email:\s*([^|]+)\s*\|\s*Phone:\s*([^|]+)\s*\|\s*LinkedIn:\s*([^|]+)\s*\|\s*GitHub:\s*([^\n\\]+)/);
+  const nameMatch = texContent.match(/\\textbf\{SHUDHANSHU BADKUR\}/i) || 
+                    texContent.match(/\\Large\\bfseries\s+SHUDHANSHU BADKUR/i) ||
+                    texContent.match(/SHUDHANSHU BADKUR/i);
+  
+  // Match contact info - handle LaTeX spacing commands (\quad, etc.)
+  const contactLineMatch = texContent.match(/Email:\s*([^|\\\n]+?)\s*(?:\||\\quad|\$\\|\$)\s*Phone:\s*([^|\\\n]+?)\s*(?:\||\\quad|\$\\|\$)\s*LinkedIn:\s*([^|\\\n]+?)\s*(?:\||\\quad|\$\\|\$)\s*GitHub:\s*([^\n\\]+)/);
   const locationMatch = texContent.match(/Location:\s*([^\n\\]+)/);
 
   data.contact = {
     name: 'Shudhanshu Badkur',
-    email: contactLineMatch ? contactLineMatch[1].trim() : '',
-    phone: contactLineMatch ? contactLineMatch[2].trim() : '',
-    linkedin: contactLineMatch ? contactLineMatch[3].trim() : '',
-    github: contactLineMatch ? contactLineMatch[4].trim() : '',
-    location: locationMatch ? locationMatch[1].trim() : ''
+    email: contactLineMatch ? cleanLaTeX(contactLineMatch[1]).trim() : 'shudhanshubadkur97@gmail.com',
+    phone: contactLineMatch ? cleanLaTeX(contactLineMatch[2]).trim() : '+91-78795-88884',
+    linkedin: contactLineMatch ? cleanLaTeX(contactLineMatch[3]).trim() : 'linkedin.com/in/shudhanshhh',
+    github: contactLineMatch ? cleanLaTeX(contactLineMatch[4]).trim() : 'github.com/shudhanshh',
+    location: locationMatch ? cleanLaTeX(locationMatch[1]).trim() : 'Bengaluru, Karnataka, India'
   };
 
   // Extract Professional Summary - Updated format
-  const summaryMatch = texContent.match(/\\noindent\\textbf\{\\large PROFESSIONAL SUMMARY\}[\s\S]*?\\\\([\s\S]*?)(?=\\vspace|\\noindent\\textbf|$)/i) ||
-                       texContent.match(/\\section\*\{PROFESSIONAL SUMMARY\}[\s\S]*?\n([^\n]+(?:\n(?!\\vspace|\\section)[^\n]+)*)/i);
+  const summaryMatch = texContent.match(/\\noindent\\textbf\{\\large PROFESSIONAL SUMMARY\}[\s\S]*?\\\\([\s\S]*?)(?=\\vspace|\\noindent\\textbf|\\section)/i) ||
+                       texContent.match(/\\section\*\{PROFESSIONAL SUMMARY\}[\s\S]*?\n(?:\\footnotesize\s*)?([^\n]+(?:\n(?!\\vspace|\\section)[^\n]+)*)/i);
   if (summaryMatch) {
-    data.summary = summaryMatch[1]
-      .replace(/\\%/g, '%')
-      .replace(/\s+/g, ' ')
-      .trim();
+    data.summary = cleanLaTeX(summaryMatch[1]);
   }
 
   // Extract Technical Skills - Updated format
@@ -118,7 +155,7 @@ function parseLaTeX(texContent) {
       const itemPattern = /\\item\s*([^\n]+(?:\n(?!\\item|\\end|\\vspace)[^\n]+)*)/g;
       let itemMatch;
       while ((itemMatch = itemPattern.exec(match[6])) !== null) {
-        let resp = itemMatch[1].replace(/\\%/g, '%').replace(/\s+/g, ' ').trim();
+        let resp = cleanLaTeX(itemMatch[1]);
         responsibilities.push(resp);
       }
 
@@ -145,13 +182,13 @@ function parseLaTeX(texContent) {
     // Extract Education
     const eduMatch = eduText.match(/\\textbf\{Education:\}\s*([^\\]+)/);
     if (eduMatch) {
-      data.education.degree = eduMatch[1].trim();
+      data.education.degree = cleanLaTeX(eduMatch[1]);
     }
 
     // Extract Certifications
     const certMatch = eduText.match(/\\textbf\{Certifications:\}\s*([^\\]+)/);
     if (certMatch) {
-      data.certifications = certMatch[1]
+      data.certifications = cleanLaTeX(certMatch[1])
         .split(',')
         .map(s => s.trim())
         .filter(s => s.length > 0);

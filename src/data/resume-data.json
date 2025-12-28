@@ -1,13 +1,13 @@
 {
   "contact": {
     "name": "Shudhanshu Badkur",
-    "email": "",
-    "phone": "",
-    "linkedin": "",
-    "github": "",
+    "email": "shudhanshubadkur97@gmail.com",
+    "phone": "+91-78795-88884",
+    "linkedin": "linkedin.com/in/shudhanshhh",
+    "github": "github.com/shudhanshh",
     "location": "Bengaluru, Karnataka, India"
   },
-  "summary": "\\footnotesize DevOps Architect and Staff Platform Engineer with 8+ years designing and scaling cloud-native, multi-tenant platforms for enterprise SaaS and fintech systems. Led platform architecture initiatives delivering \\textbf{60%} infrastructure cost savings (\\textbf{USD 1.4M+} monthly) while maintaining \\textbf{99.99%} uptime for systems handling \\textbf{500K+} requests/min serving \\textbf{5M+} active users. Expert in Kubernetes, GitOps, multi-cloud strategy, and security compliance (ISO 27001, PCI-DSS, SOC 2), with strong leadership in mentoring engineers and driving organization-wide infrastructure standards.",
+  "summary": "DevOps Architect and Staff Platform Engineer with 8+ years designing and scaling cloud-native, multi-tenant platforms for enterprise SaaS and fintech systems. Led platform architecture initiatives delivering 60% infrastructure cost savings (USD 1.4M+ monthly) while maintaining 99.99% uptime for systems handling 500K+ requests/min serving 5M+ active users. Expert in Kubernetes, GitOps, multi-cloud strategy, and security compliance (ISO 27001, PCI-DSS, SOC 2), with strong leadership in mentoring engineers and driving organization-wide infrastructure standards.",
   "skills": {
     "Cloud": [
       "AWS",
@@ -73,7 +73,7 @@
       "SAST",
       "DAST",
       "SonarQube",
-      "Kube-bench"
+      "Kube-bench\n\n% ============================================\n% Professional Experience\n% ============================================"
     ]
   },
   "experience": [],
