@@ -5,43 +5,41 @@
     "phone": "+91-78795-88884",
     "linkedin": "linkedin.com/in/shudhanshhh",
     "github": "github.com/shudhanshh",
-    "location": "Bengaluru, Karnataka, India"
+    "location": "Bengaluru, India"
   },
-  "summary": "DevOps Architect and Staff Platform Engineer with 8+ years designing and scaling cloud-native, multi-tenant platforms for enterprise SaaS and fintech systems. Led platform architecture initiatives delivering 60% infrastructure cost savings (USD 1.4M+ monthly) while maintaining 99.99% uptime for systems handling 500K+ requests/min serving 5M+ active users. Expert in Kubernetes, GitOps, multi-cloud strategy, and security compliance (ISO 27001, PCI-DSS, SOC 2), with strong leadership in mentoring engineers and driving organization-wide infrastructure standards.",
+  "summary": "DevOps Architect with 8+ years designing cloud-native, multi-tenant platforms for enterprise SaaS and fintech. Led initiatives delivering 60% cost savings (USD 1.4M+/month) while maintaining 99.99% uptime for systems handling 500K+ RPM serving 5M+ users. Expert in Kubernetes, GitOps, FinOps, DevSecOps, MLOps, and compliance (ISO 27001, PCI-DSS, SOC 2). Track record of mentoring engineers and driving org-wide platform standards.",
   "skills": {
-    "Cloud": [
+    "Cloud & Infrastructure": [
       "AWS",
       "GCP",
       "Azure",
-      "Kubernetes",
-      "EKS",
-      "GKE",
+      "Kubernetes (EKS, GKE, AKS)",
       "Docker",
       "Helm",
       "Terraform",
       "Terragrunt"
     ],
-    "DevOps": [
+    "CI/CD & GitOps": [
       "GitHub Actions",
-      "GitLab CI/CD",
+      "GitLab CI",
       "ArgoCD",
       "FluxCD",
       "Jenkins",
       "Spinnaker",
-      "GitOps",
-      "Karpenter"
+      "Karpenter",
+      "Ansible"
     ],
     "Observability": [
       "Prometheus",
       "Grafana",
       "OpenTelemetry",
       "Jaeger",
-      "ELK Stack",
+      "ELK",
       "Datadog",
       "Loki",
       "VictoriaMetrics"
     ],
-    "Data/ML": [
+    "Data & ML": [
       "Kubeflow",
       "MLflow",
       "Apache Airflow",
@@ -49,36 +47,135 @@
       "BigQuery",
       "PostgreSQL",
       "Redis",
-      "Seldon",
       "ClickHouse"
     ],
-    "Programming": [
-      "Go",
-      "Python",
-      "Bash",
-      "YAML",
-      "HCL",
-      "NGINX",
-      "Kafka",
-      "Pulsar",
-      "RabbitMQ"
-    ],
-    "Security": [
+    "Security & Compliance": [
       "ISO 27001",
       "PCI-DSS",
       "SOC 2",
       "HashiCorp Vault",
       "OPA",
-      "Ory Hydra",
-      "SAST",
-      "DAST",
       "SonarQube",
-      "Kube-bench\n\n% ============================================\n% Professional Experience\n% ============================================"
+      "Kube-bench"
+    ],
+    "Languages": [
+      "Go",
+      "Python",
+      "Bash",
+      "HCL"
+    ],
+    "Messaging": [
+      "Kafka",
+      "Pulsar",
+      "RabbitMQ"
+    ],
+    "Practices": [
+      "Platform Engineering",
+      "FinOps",
+      "DevSecOps",
+      "MLOps",
+      "SRE",
+      "GitOps",
+      "IaC"
     ]
   },
-  "experience": [],
+  "experience": [
+    {
+      "title": "DevOps Architect",
+      "company": "Virima",
+      "location": "Bengaluru, India",
+      "dateRange": "Sep 2025 -- Present",
+      "isYC": false,
+      "ycBatch": null,
+      "product": "Enterprise ITSM/ITAM platform competing with ServiceNow, serving 400K+ tenants",
+      "domain": "",
+      "responsibilities": [
+        "Own cloud and platform architecture for enterprise SaaS, defining scalable multi-tenant and DevSecOps-first patterns",
+        "Designed AWS EKS platform using Terraform, Terragrunt, and GitOps aligned with CIS benchmarks",
+        "Serve as technical authority for Kubernetes, CI/CD, FinOps, and cloud-native architecture across engineering"
+      ]
+    },
+    {
+      "title": "Staff Engineer -- DevOps",
+      "company": "Celona",
+      "location": "Bengaluru, India",
+      "dateRange": "Mar 2025 -- Aug 2025",
+      "isYC": false,
+      "ycBatch": null,
+      "product": "Enterprise private 5G/LTE platform for industrial, healthcare, and edge networks",
+      "domain": "",
+      "responsibilities": [
+        "Built multi-cloud, multi-tenant platform from ground up supporting 50+ microservices",
+        "Architected DevSecOps workflows for SOC 2 compliance; mentored 8+ engineers on cloud-native best practices",
+        "Built end-to-end MLOps pipelines using Kubeflow, MLflow, and Airflow on GKE with Seldon for model serving",
+        "Defined platform engineering standards for networking, IAM, GitOps, and tenancy isolation; improved developer experience (DevEx)"
+      ]
+    },
+    {
+      "title": "Associate Technical Lead -- DevOps & InfoSec",
+      "company": "OkCredit",
+      "location": "Bengaluru, India",
+      "dateRange": "Apr 2021 -- Mar 2025",
+      "isYC": true,
+      "ycBatch": "W18",
+      "product": "Digital ledger and fintech platform for 25M+ SMBs across India",
+      "domain": "",
+      "responsibilities": [
+        "Led 8-person DevOps team supporting fintech platform serving 5M+ active users",
+        "Achieved 60% infrastructure cost reduction (USD 1.4M+/month) through FinOps practices, automation, and multi-cloud optimization",
+        "Spearheaded ISO 27001:2022 certification, audits, and vendor risk management",
+        "Implemented DevSecOps practices: PCI-DSS controls, SAST/DAST integration, incident response, and security monitoring",
+        "Reduced deployment time by 40% across 90+ microservices using ArgoCD and GitOps",
+        "Improved uptime by 25% and MTTR by 15% through observability and DR strategy",
+        "Served as Kubernetes platform owner influencing architecture across 25+ engineering teams; enabled self-healing infrastructure and auto-scaling"
+      ]
+    },
+    {
+      "title": "Site Reliability Engineer",
+      "company": "Runnel",
+      "location": "Remote, India",
+      "dateRange": "Nov 2020 -- Apr 2021",
+      "isYC": false,
+      "ycBatch": null,
+      "product": "Multi-cloud data streaming and ML infrastructure platform",
+      "domain": "",
+      "responsibilities": [
+        "Maintained 99.99% availability across AKS, EKS, and GCP environments",
+        "Reduced mobile release cycles by 50% through MLOps and deployment automation"
+      ]
+    },
+    {
+      "title": "DevOps Engineer L2",
+      "company": "Appointy",
+      "location": "Bhopal, India",
+      "dateRange": "Mar 2019 -- Nov 2020",
+      "isYC": false,
+      "ycBatch": null,
+      "product": "B2B scheduling SaaS platform serving 200K+ businesses globally",
+      "domain": "",
+      "responsibilities": [
+        "Reduced configuration errors by 30% using Helm-based provisioning",
+        "Migrated production workloads from Azure to GCP with 99% uptime maintained",
+        "Reduced incidents by 20% implementing OpenTelemetry-based distributed tracing"
+      ]
+    },
+    {
+      "title": "System Engineer",
+      "company": "ITE",
+      "location": "Bhopal, India",
+      "dateRange": "Mar 2018 -- Feb 2019",
+      "isYC": false,
+      "ycBatch": null,
+      "product": "IT infrastructure and private cloud solutions provider",
+      "domain": "",
+      "responsibilities": [
+        "Built OpenStack private cloud reducing hardware costs by 30%",
+        "Improved response times by 40% through NGINX and Apache optimization"
+      ]
+    }
+  ],
   "education": {
-    "degree": "B.E. Information Technology, UIT RGPV, Bhopal"
+    "degree": "B.E. Information Technology -- UIT RGPV, Bhopal"
   },
   "certifications": [
     "CKA",
@@ -86,6 +183,6 @@
     "RHCE",
     "RHCSA",
     "Red Hat OpenStack v10",
-    "CISSP Candidate"
+    "CISSP (Candidate)"
   ]
 }

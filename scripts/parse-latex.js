@@ -26,6 +26,8 @@ function cleanLaTeX(text) {
     .replace(/\\LARGE\s*/g, '')
     .replace(/\\huge\s*/g, '')
     .replace(/\\Huge\s*/g, '')
+    // Remove href but keep content
+    .replace(/\\href\{[^}]+\}\{([^}]+)\}/g, '$1')
     // Remove textbf but keep content
     .replace(/\\textbf\{([^}]+)\}/g, '$1')
     // Remove textit but keep content
@@ -33,6 +35,7 @@ function cleanLaTeX(text) {
     // Remove other common LaTeX commands
     .replace(/\\emph\{([^}]+)\}/g, '$1')
     .replace(/\\text\{([^}]+)\}/g, '$1')
+    .replace(/\\textbar/g, '|')
     // Remove escaped characters
     .replace(/\\%/g, '%')
     .replace(/\\&/g, '&')
@@ -40,7 +43,8 @@ function cleanLaTeX(text) {
     .replace(/\\_/g, '_')
     .replace(/\\\{/g, '{')
     .replace(/\\\}/g, '}')
-    // Remove remaining LaTeX commands (generic)
+    .replace(/\\--/g, '--')
+    // Remove remaining LaTeX commands (generic) - but be careful with role command
     .replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1')
     .replace(/\\[a-zA-Z]+/g, '')
     // Clean up whitespace
@@ -58,138 +62,183 @@ function parseLaTeX(texContent) {
     certifications: []
   };
 
-  // Extract contact information - ATS-friendly format with pipe separators
-  const nameMatch = texContent.match(/\\textbf\{SHUDHANSHU BADKUR\}/i) || 
-                    texContent.match(/\\Large\\bfseries\s+SHUDHANSHU BADKUR/i) ||
-                    texContent.match(/SHUDHANSHU BADKUR/i);
+  // Extract contact information - handle href format
+  const nameMatch = texContent.match(/\\LARGE\\bfseries\s+Shudhanshu Badkur/i) ||
+                    texContent.match(/Shudhanshu Badkur/i);
   
-  // Match contact info - handle LaTeX spacing commands (\quad, etc.)
-  const contactLineMatch = texContent.match(/Email:\s*([^|\\\n]+?)\s*(?:\||\\quad|\$\\|\$)\s*Phone:\s*([^|\\\n]+?)\s*(?:\||\\quad|\$\\|\$)\s*LinkedIn:\s*([^|\\\n]+?)\s*(?:\||\\quad|\$\\|\$)\s*GitHub:\s*([^\n\\]+)/);
-  const locationMatch = texContent.match(/Location:\s*([^\n\\]+)/);
+  // Match contact info with href links
+  const emailMatch = texContent.match(/\\href\{mailto:([^}]+)\}\{([^}]+)\}/);
+  const phoneMatch = texContent.match(/\+91-78795-88884/);
+  const linkedinMatch = texContent.match(/\\href\{https:\/\/linkedin\.com\/in\/([^}]+)\}\{LinkedIn\}/);
+  const githubMatch = texContent.match(/\\href\{https:\/\/github\.com\/([^}]+)\}\{GitHub\}/);
+  const locationMatch = texContent.match(/Bengaluru, India/);
 
   data.contact = {
     name: 'Shudhanshu Badkur',
-    email: contactLineMatch ? cleanLaTeX(contactLineMatch[1]).trim() : 'shudhanshubadkur97@gmail.com',
-    phone: contactLineMatch ? cleanLaTeX(contactLineMatch[2]).trim() : '+91-78795-88884',
-    linkedin: contactLineMatch ? cleanLaTeX(contactLineMatch[3]).trim() : 'linkedin.com/in/shudhanshhh',
-    github: contactLineMatch ? cleanLaTeX(contactLineMatch[4]).trim() : 'github.com/shudhanshh',
-    location: locationMatch ? cleanLaTeX(locationMatch[1]).trim() : 'Bengaluru, Karnataka, India'
+    email: emailMatch ? emailMatch[2].trim() : 'shudhanshubadkur97@gmail.com',
+    phone: phoneMatch ? '+91-78795-88884' : '+91-78795-88884',
+    linkedin: linkedinMatch ? `linkedin.com/in/${linkedinMatch[1]}` : 'linkedin.com/in/shudhanshhh',
+    github: githubMatch ? `github.com/${githubMatch[1]}` : 'github.com/shudhanshh',
+    location: locationMatch ? 'Bengaluru, India' : 'Bengaluru, India'
   };
 
-  // Extract Professional Summary - Updated format
-  const summaryMatch = texContent.match(/\\noindent\\textbf\{\\large PROFESSIONAL SUMMARY\}[\s\S]*?\\\\([\s\S]*?)(?=\\vspace|\\noindent\\textbf|\\section)/i) ||
+  // Extract Professional Summary - handle \section{} format
+  const summaryMatch = texContent.match(/\\section\{Professional Summary\}[\s\S]*?\n([^\n]+(?:\n(?!\\section|\\vspace)[^\n]+)*)/i) ||
                        texContent.match(/\\section\*\{PROFESSIONAL SUMMARY\}[\s\S]*?\n(?:\\footnotesize\s*)?([^\n]+(?:\n(?!\\vspace|\\section)[^\n]+)*)/i);
   if (summaryMatch) {
     data.summary = cleanLaTeX(summaryMatch[1]);
   }
 
-  // Extract Technical Skills - Updated format
-  const skillsSection = texContent.match(/\\noindent\\textbf\{\\large TECHNICAL SKILLS\}[\s\S]*?\\noindent\\textbf\{\\large PROFESSIONAL EXPERIENCE\}/i) ||
+  // Extract Technical Skills - handle \section{} format
+  const skillsSection = texContent.match(/\\section\{Technical Skills\}[\s\S]*?\\section\{Professional Experience\}/i) ||
                         texContent.match(/\\section\*\{TECHNICAL SKILLS\}[\s\S]*?\\section\*\{PROFESSIONAL EXPERIENCE\}/i);
   if (skillsSection) {
     const skillsText = skillsSection[0];
     
-    // Extract each skill category - ATS format with full names
+    // Extract each skill category - handle new format with & in category names
     const skillPattern = /\\textbf\{([^}]+):\}\s*([^\\]+)/g;
     let match;
     while ((match = skillPattern.exec(skillsText)) !== null) {
-      const category = match[1].replace(/\\&/g, '&').trim();
-      // Better parsing that handles parentheses
+      let category = match[1].replace(/\\&/g, '&').trim();
+      // Handle special cases like "Cloud & Infrastructure"
+      category = category.replace(/\\&/g, '&');
+      
+      // Better parsing that handles parentheses and pipes
       const skillsStr = match[2].trim();
       const skills = [];
       let current = '';
       let parenDepth = 0;
       
+      // Split by comma, but respect parentheses and handle pipes
       for (let i = 0; i < skillsStr.length; i++) {
         const char = skillsStr[i];
         if (char === '(') parenDepth++;
         if (char === ')') parenDepth--;
         
         if (char === ',' && parenDepth === 0) {
-          if (current.trim()) skills.push(current.trim());
+          if (current.trim()) {
+            const skill = cleanLaTeX(current.trim());
+            if (skill && !skill.includes('Professional Experience')) skills.push(skill);
+          }
           current = '';
+        } else if (char === '|' && parenDepth === 0 && current.trim().length > 0) {
+          // Handle pipe separator (like in "Go, Python, Bash, HCL | Messaging: Kafka...")
+          if (current.trim()) {
+            const skill = cleanLaTeX(current.trim());
+            if (skill && !skill.includes('Professional Experience')) skills.push(skill);
+          }
+          current = '';
+          break; // Stop at pipe, next category will be handled separately
         } else {
           current += char;
         }
       }
-      if (current.trim()) skills.push(current.trim());
+      if (current.trim()) {
+        const skill = cleanLaTeX(current.trim());
+        if (skill) skills.push(skill);
+      }
       
-      data.skills[category] = skills.filter(s => s.length > 0);
+      // Filter out skills that contain section markers or are empty
+      data.skills[category] = skills.filter(s => {
+        return s.length > 0 && 
+               !s.includes('Professional Experience') && 
+               !s.includes('============================================') &&
+               !s.includes('%');
+      });
     }
   }
 
-  // Extract Professional Experience - Updated format
-  const experienceSection = texContent.match(/\\noindent\\textbf\{\\large PROFESSIONAL EXPERIENCE\}[\s\S]*?\\noindent\\textbf\{\\large EDUCATION/i) ||
+  // Extract Professional Experience - handle \role{} command format
+  const experienceSection = texContent.match(/\\section\{Professional Experience\}[\s\S]*?\\section\{Education/i) ||
                             texContent.match(/\\section\*\{PROFESSIONAL EXPERIENCE\}[\s\S]*?\\section\*\{EDUCATION/i);
   if (experienceSection) {
     const expText = experienceSection[0];
     
-    // Match each job entry - Updated format: Title | Company | Location \n Date | Product/Domain
-    const jobPattern = /\\textbf\{([^}]+)\}\s*\|\s*\\textbf\{([^}]+)\}\s*\|\s*([^\\]+)\s*\\\\\s*\\textit\{([^}]+)\}\s*\|\s*([^\n\\]+)[\s\S]*?\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/g;
-    let match;
-    while ((match = jobPattern.exec(expText)) !== null) {
-      const title = match[1].trim();
-      const company = match[2].trim();
-      const location = match[3].trim();
-      const dateRange = match[4].trim();
-      const productDomain = match[5].trim();
-      // Split product and domain if separated by |
-      const productDomainParts = productDomain.split('|').map(s => s.trim());
-      const product = productDomainParts[0] || '';
-      const domain = productDomainParts[1] || '';
+    // Match \role{title}{company}{location}{dates} format
+    const rolePattern = /\\role\{([^}]+)\}\{([^}]+)\}\{([^}]+)\}\{([^}]+)\}/g;
+    let roleMatch;
+    const roles = [];
+    
+    while ((roleMatch = rolePattern.exec(expText)) !== null) {
+      roles.push({
+        title: roleMatch[1].trim(),
+        company: roleMatch[2].trim(),
+        location: roleMatch[3].trim(),
+        dateRange: roleMatch[4].trim().replace(/\\--/g, '--'),
+        startPos: roleMatch.index
+      });
+    }
+    
+    // For each role, extract the product description and responsibilities
+    for (let i = 0; i < roles.length; i++) {
+      const role = roles[i];
+      const nextRoleStart = i < roles.length - 1 ? roles[i + 1].startPos : expText.length;
+      const roleSection = expText.substring(role.startPos, nextRoleStart);
+      
+      // Extract product/description (italic text after role)
+      const productMatch = roleSection.match(/\\textit\{[^}]*\\small\s*([^}]+)\}/);
+      const product = productMatch ? cleanLaTeX(productMatch[1]) : '';
+      
+      // Extract responsibilities - handle multi-line items
+      const responsibilities = [];
+      const itemizeMatch = roleSection.match(/\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/);
+      if (itemizeMatch) {
+        const itemizeContent = itemizeMatch[1];
+        // Split by \item and process each one
+        const items = itemizeContent.split(/\\item\s+/).filter(item => item.trim().length > 0);
+        for (const item of items) {
+          // Remove any trailing \end or \vspace commands
+          const cleanItem = item.replace(/\\end.*$/, '').replace(/\\vspace.*$/, '').trim();
+          if (cleanItem) {
+            const resp = cleanLaTeX(cleanItem);
+            if (resp) responsibilities.push(resp);
+          }
+        }
+      }
       
       // Handle YC badge in company name
-      const ycMatch = company.match(/\(Y Combinator\s+([^)]+)\)/i) || company.match(/\(YC\s+([^)]+)\)/i);
-      let cleanCompany = company;
+      const ycMatch = role.company.match(/\(YC\s+([^)]+)\)/i) || role.company.match(/\(Y Combinator\s+([^)]+)\)/i);
+      let cleanCompany = role.company;
       let isYC = false;
       let ycBatch = null;
       
       if (ycMatch) {
         isYC = true;
         ycBatch = ycMatch[1].trim();
-        cleanCompany = company.replace(/\s*\([^)]+\)/, '').trim();
+        cleanCompany = role.company.replace(/\s*\([^)]+\)/, '').trim();
       }
       
-      // Extract responsibilities
-      const responsibilities = [];
-      const itemPattern = /\\item\s*([^\n]+(?:\n(?!\\item|\\end|\\vspace)[^\n]+)*)/g;
-      let itemMatch;
-      while ((itemMatch = itemPattern.exec(match[6])) !== null) {
-        let resp = cleanLaTeX(itemMatch[1]);
-        responsibilities.push(resp);
-      }
-
       data.experience.push({
-        title,
+        title: cleanLaTeX(role.title),
         company: cleanCompany,
-        location,
-        dateRange,
+        location: role.location,
+        dateRange: role.dateRange,
         isYC,
         ycBatch,
         product,
-        domain,
+        domain: '',
         responsibilities
       });
     }
   }
 
-  // Extract Education and Certifications - Updated format
-  const eduSection = texContent.match(/\\noindent\\textbf\{\\large EDUCATION AND CERTIFICATIONS\}[\s\S]*?\\end\{document\}/i) ||
-                    texContent.match(/\\section\*\{EDUCATION AND CERTIFICATIONS\}[\s\S]*?\\end\{document\}/i);
+  // Extract Education and Certifications - handle \section{} format
+  const eduSection = texContent.match(/\\section\{Education[^}]*\}[\s\S]*?\\end\{document\}/i) ||
+                    texContent.match(/\\section\*\{EDUCATION[^}]*\}[\s\S]*?\\end\{document\}/i);
   if (eduSection) {
     const eduText = eduSection[0];
     
-    // Extract Education
-    const eduMatch = eduText.match(/\\textbf\{Education:\}\s*([^\\]+)/);
+    // Extract Education - handle "B.E. Information Technology -- UIT RGPV, Bhopal" format
+    const eduMatch = eduText.match(/\\textbf\{([^}]+)\}\s*--\s*([^\\]+)/);
     if (eduMatch) {
-      data.education.degree = cleanLaTeX(eduMatch[1]);
+      data.education.degree = cleanLaTeX(`${eduMatch[1]} -- ${eduMatch[2]}`);
     }
 
-    // Extract Certifications
+    // Extract Certifications - handle "CKA | HashiCorp..." format
     const certMatch = eduText.match(/\\textbf\{Certifications:\}\s*([^\\]+)/);
     if (certMatch) {
       data.certifications = cleanLaTeX(certMatch[1])
-        .split(',')
+        .split('|')
         .map(s => s.trim())
         .filter(s => s.length > 0);
     }
