@@ -78,7 +78,7 @@
       "dateRange": "09/2025 - Present",
       "isYC": false,
       "ycBatch": null,
-      "product": "Enterprise IT Asset Management \\& Discovery",
+      "product": "Enterprise IT Asset Management & Discovery",
       "domain": "Enterprise SaaS",
       "responsibilities": [
         "Leading cloud and platform architecture for enterprise SaaS products with focus on scalability, reliability, and security",
@@ -94,8 +94,8 @@
       "dateRange": "03/2025 - 08/2025",
       "isYC": false,
       "ycBatch": null,
-      "product": "Private 5G Networks \\& Edge Computing",
-      "domain": "Enterprise Networking \\& IoT",
+      "product": "Private 5G Networks & Edge Computing",
+      "domain": "Enterprise Networking & IoT",
       "responsibilities": [
         "Built ground-up multi-cloud / multi-tenant infrastructure supporting 50+ microservices with GitOps and security-first design",
         "Architected SOC 2 compliance workflows and mentored 8+ engineers on cloud-native best practices",
@@ -110,8 +110,8 @@
       "dateRange": "04/2021 - 03/2025",
       "isYC": true,
       "ycBatch": "W18",
-      "product": "Digital Credit Ledger \\& Payment Solutions",
-      "domain": "Fintech \\& B2B2C",
+      "product": "Digital Credit Ledger & Payment Solutions",
+      "domain": "Fintech & B2B2C",
       "responsibilities": [
         "Led and scaled an 8-person DevOps team owning production infrastructure for a fintech platform serving 5M+ users",
         "Achieved 60 percent infrastructure cost reduction (USD 1.4M+ monthly) through automated scaling and multi-cloud optimization",
@@ -130,7 +130,7 @@
       "isYC": false,
       "ycBatch": null,
       "product": "ML-Powered Analytics Platform",
-      "domain": "Data Analytics \\& Machine Learning",
+      "domain": "Data Analytics & Machine Learning",
       "responsibilities": [
         "Maintained 99.99 percent availability across AKS, EKS, and GCP environments serving 100K+ users",
         "Optimized ML model deployment pipelines reducing mobile app release cycles by 50 percent for 15+ teams"
@@ -143,8 +143,8 @@
       "dateRange": "03/2019 - 11/2020",
       "isYC": false,
       "ycBatch": null,
-      "product": "Appointment Scheduling \\& Calendar Management",
-      "domain": "SaaS \\& Business Automation",
+      "product": "Appointment Scheduling & Calendar Management",
+      "domain": "SaaS & Business Automation",
       "responsibilities": [
         "Streamlined platform provisioning with Helm charts for a multi-tenant SaaS platform reducing configuration errors by 30 percent",
         "Migrated production infrastructure from Azure to GCP ensuring 99 percent uptime",
@@ -159,7 +159,7 @@
       "isYC": false,
       "ycBatch": null,
       "product": "Smart City Infrastructure Solutions",
-      "domain": "Government Tech \\& Infrastructure",
+      "domain": "Government Tech & Infrastructure",
       "responsibilities": [
         "Built and operated OpenStack-based private cloud infrastructure reducing hardware costs by 30 percent",
         "Optimized Nginx and Apache performance improving response times by 40 percent for smart city systems"
