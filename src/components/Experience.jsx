@@ -24,7 +24,10 @@ const Experience = () => {
     });
   }
 
-  if (!experience || !Array.isArray(experience) || experience.length === 0) {
+  // Ensure we have valid experience data
+  const experienceData = resumeData?.experience || experience || []
+  
+  if (!experienceData || !Array.isArray(experienceData) || experienceData.length === 0) {
     return (
       <section className="resume-section" ref={sectionRef}>
         <div className="section-header">
@@ -50,7 +53,7 @@ const Experience = () => {
       </div>
       <div className="section-content">
         <div className="timeline">
-          {experience.map((exp, index) => {
+          {experienceData.map((exp, index) => {
             if (!exp || !exp.responsibilities || !Array.isArray(exp.responsibilities)) {
               return null
             }
