@@ -4,8 +4,9 @@
   "type": "module",
   "description": "Modern resume website built with React and Vite",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "parse": "node scripts/parse-latex.js",
+    "dev": "npm run parse && vite",
+    "build": "npm run parse && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

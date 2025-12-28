@@ -8,6 +8,10 @@ on:
       - 'main.tex'
   workflow_dispatch:
 
+# Also trigger website rebuild when LaTeX changes
+permissions:
+  contents: write
+
 permissions:
   contents: write
 
@@ -32,13 +36,18 @@ jobs:
           mkdir -p public
           cp main.pdf public/resume.pdf
 
-      - name: Commit and push PDF
+      - name: Parse LaTeX and update website data
+        run: |
+          npm ci
+          npm run parse
+
+      - name: Commit and push PDF and data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add public/resume.pdf
+          git add public/resume.pdf src/data/resume-data.json
           if ! git diff --staged --quiet; then
-            git commit -m "Update PDF resume [skip ci]"
+            git commit -m "Update PDF resume and website data from LaTeX [skip ci]"
             git push
           fi
 

@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react'
+import resumeData from '../data/resumeData'
 
 const Summary = () => {
   const sectionRef = useRef(null)
+  const { summary } = resumeData
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,6 +28,19 @@ const Summary = () => {
     }
   }, [])
 
+  // Convert plain text to JSX with bold formatting for numbers/percentages
+  const formatSummary = (text) => {
+    // Match numbers, percentages, and key phrases
+    const pattern = /(\d+\+ years|\d+ percent|\d+%|USD \d+\.\d+M\+|\d+\.\d+ percent|\d+K\+ requests|\d+M\+ active users|individual contributor|technical leader)/gi;
+    const parts = text.split(pattern);
+    return parts.map((part, index) => {
+      if (part.match(pattern)) {
+        return <strong key={index}>{part}</strong>;
+      }
+      return <span key={index}>{part}</span>;
+    });
+  }
+
   return (
     <section className="resume-section" ref={sectionRef} data-animate="fade-up">
       <div className="section-header">
@@ -36,7 +51,7 @@ const Summary = () => {
       </div>
       <div className="section-content">
         <p className="summary-text">
-          DevOps Architect / Staff Platform Engineer with <strong>8+ years</strong> designing and scaling cloud-native, multi-tenant platforms for enterprise SaaS and fintech. Proven track record as both <strong>individual contributor</strong> and <strong>technical leader</strong>, delivering <strong>60% infrastructure cost savings</strong> (USD 1.4M+ monthly) while maintaining <strong>99.99% uptime</strong> for systems handling <strong>500K+ requests/minute</strong> and <strong>5M+ active users</strong>. Expert in Kubernetes, GitOps, multi-cloud strategy, and security compliance (ISO 27001, PCI-DSS, SOC 2).
+          {formatSummary(summary)}
         </p>
       </div>
     </section>
@@ -44,4 +59,3 @@ const Summary = () => {
 }
 
 export default Summary
-

@@ -1,14 +1,9 @@
 import React, { useEffect, useRef } from 'react'
-
-const certifications = [
-  'CKA',
-  'HashiCorp Terraform Associate',
-  'Red Hat Certified Engineer/System Administrator',
-  'CISSP Candidate'
-]
+import resumeData from '../data/resumeData'
 
 const Education = () => {
   const sectionRef = useRef(null)
+  const { education, certifications } = resumeData
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,7 +40,7 @@ const Education = () => {
         <div className="education-cert-container">
           <div className="education-section">
             <h3 className="subsection-title">Education</h3>
-            <p className="education-detail">B.E. Information Technology, UIT RGPV, Bhopal</p>
+            <p className="education-detail">{education.degree}</p>
           </div>
           <div className="certifications-section">
             <h3 className="subsection-title">Certifications</h3>
@@ -62,4 +57,3 @@ const Education = () => {
 }
 
 export default Education
-

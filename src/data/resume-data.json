@@ -1,0 +1,166 @@
+{
+  "contact": {
+    "name": "Shudhanshu Badkur",
+    "email": "shudhanshubadkur97@gmail.com",
+    "phone": "+91 78795 88884",
+    "linkedin": "linkedin.com/in/shudhanshhh",
+    "github": "github.com/shudhanshh",
+    "location": "Bengaluru, India"
+  },
+  "summary": "DevOps Architect / Staff Platform Engineer with 8+ years of experience designing and scaling cloud-native, multi-tenant platforms for enterprise SaaS and fintech systems. Proven track record of leading platform architecture initiatives delivering 60 percent infrastructure cost savings (USD 1.4M+ monthly) while maintaining 99.99 percent uptime for systems handling 500K+ requests per minute and 5M+ active users. Expert in Kubernetes, GitOps, multi-cloud strategy, and security compliance (ISO 27001, PCI-DSS, SOC 2), with strong leadership in mentoring engineers and driving org-wide infrastructure standards.",
+  "skills": {
+    "Cloud & Platforms": [
+      "AWS",
+      "GCP",
+      "Azure",
+      "Kubernetes (EKS, GKE)",
+      "Docker",
+      "Helm",
+      "Terraform",
+      "Terragrunt"
+    ],
+    "GitOps & CI/CD": [
+      "ArgoCD",
+      "FluxCD",
+      "GitHub Actions",
+      "GitLab CI/CD",
+      "Jenkins",
+      "Spinnaker",
+      "Karpenter"
+    ],
+    "Observability": [
+      "Prometheus",
+      "Grafana",
+      "OpenTelemetry",
+      "Jaeger",
+      "ELK Stack",
+      "Datadog",
+      "Loki",
+      "VictoriaMetrics"
+    ],
+    "Data & MLOps": [
+      "Kubeflow",
+      "MLflow",
+      "Apache Airflow",
+      "Flink",
+      "BigQuery",
+      "PostgreSQL",
+      "Redis",
+      "Seldon"
+    ],
+    "Languages & Systems": [
+      "Go",
+      "Python",
+      "Bash",
+      "YAML",
+      "HCL",
+      "NGINX",
+      "Kafka",
+      "Pulsar",
+      "RabbitMQ"
+    ],
+    "Security & Compliance": [
+      "ISO 27001",
+      "PCI-DSS",
+      "SOC 2",
+      "HashiCorp Vault",
+      "OPA",
+      "Hydra",
+      "SAST/DAST",
+      "SonarQube"
+    ]
+  },
+  "experience": [
+    {
+      "title": "DevOps Architect",
+      "company": "Virima",
+      "location": "Bengaluru",
+      "dateRange": "India",
+      "isYC": false,
+      "ycBatch": null,
+      "responsibilities": [
+        "Leading cloud and platform architecture for enterprise SaaS products with focus on scalability, reliability, and security",
+        "Driving cloud cost optimization, observability standards, and production readiness across engineering teams",
+        "Acting as technical authority for CI/CD, Kubernetes, and cloud-native best practices",
+        "Partnering with leadership and security teams to align infrastructure with enterprise compliance and SLA requirements"
+      ]
+    },
+    {
+      "title": "Staff Engineer - DevOps",
+      "company": "Celona",
+      "location": "Bengaluru",
+      "dateRange": "India",
+      "isYC": false,
+      "ycBatch": null,
+      "responsibilities": [
+        "Built ground-up multi-cloud / multi-tenant infrastructure supporting 50+ microservices with GitOps and security-first design",
+        "Architected SOC 2 compliance workflows and mentored 8+ engineers on cloud-native best practices",
+        "Developed MLOps pipelines using Kubeflow, MLflow, and Apache Airflow on GKE with Seldon for real-time analytics",
+        "Defined platform architecture standards (networking, IAM, GitOps, tenancy) adopted across product teams"
+      ]
+    },
+    {
+      "title": "Associate Technical Lead - DevOps and InfoSec",
+      "company": "OkCredit",
+      "location": "Bengaluru",
+      "dateRange": "India",
+      "isYC": true,
+      "ycBatch": "W18",
+      "responsibilities": [
+        "Led and scaled an 8-person DevOps team owning production infrastructure for a fintech platform serving 5M+ users",
+        "Achieved 60 percent infrastructure cost reduction (USD 1.4M+ monthly) through automated scaling and multi-cloud optimization",
+        "Spearheaded ISO 27001:2022 certification including policy development, audits, and vendor risk management",
+        "Implemented PCI-DSS compliance, security monitoring, and incident response frameworks",
+        "Deployed GitOps workflows using ArgoCD reducing deployment time by 40 percent across 90+ microservices",
+        "Enhanced observability stack reducing MTTR by 15 percent and improving system uptime by 25 percent",
+        "Acted as platform owner for Kubernetes and CI/CD, influencing architecture decisions across 25+ engineering teams"
+      ]
+    },
+    {
+      "title": "Site Reliability Engineer",
+      "company": "Runnel",
+      "location": "Remote",
+      "dateRange": "India",
+      "isYC": false,
+      "ycBatch": null,
+      "responsibilities": [
+        "Maintained 99.99 percent availability across AKS, EKS, and GCP environments serving 100K+ users",
+        "Optimized ML model deployment pipelines reducing mobile app release cycles by 50 percent for 15+ teams"
+      ]
+    },
+    {
+      "title": "DevOps Engineer - L2",
+      "company": "Appointy",
+      "location": "Bhopal",
+      "dateRange": "India",
+      "isYC": false,
+      "ycBatch": null,
+      "responsibilities": [
+        "Streamlined platform provisioning with Helm charts for a multi-tenant SaaS platform reducing configuration errors by 30 percent",
+        "Migrated production infrastructure from Azure to GCP ensuring 99 percent uptime",
+        "Implemented APM and tracing using OpenTelemetry reducing production incidents by 20 percent"
+      ]
+    },
+    {
+      "title": "System Engineer",
+      "company": "ITE",
+      "location": "Bhopal",
+      "dateRange": "India",
+      "isYC": false,
+      "ycBatch": null,
+      "responsibilities": [
+        "Built and operated OpenStack-based private cloud infrastructure reducing hardware costs by 30 percent",
+        "Optimized Nginx and Apache performance improving response times by 40 percent for smart city systems"
+      ]
+    }
+  ],
+  "education": {
+    "degree": "B.E. Information Technology, UIT RGPV, Bhopal"
+  },
+  "certifications": [
+    "CKA",
+    "HashiCorp Terraform Associate",
+    "Red Hat Certified Engineer/System Administrator",
+    "CISSP Candidate"
+  ]
+}
