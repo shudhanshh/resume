@@ -22,37 +22,35 @@ function parseLaTeX(texContent) {
     certifications: []
   };
 
-  // Extract contact information - more flexible parsing
-  const nameMatch = texContent.match(/\\textbf\{Shudhanshu Badkur\}/);
-  const emailMatch = texContent.match(/Email:\s*([^\n\\]+)/);
-  const phoneMatch = texContent.match(/Phone:\s*([^\n\\]+)/);
-  const linkedinMatch = texContent.match(/LinkedIn:\s*([^\n\\]+)/);
-  const githubMatch = texContent.match(/GitHub:\s*([^\n\\]+)/);
+  // Extract contact information - ATS-friendly format with pipe separators
+  const nameMatch = texContent.match(/\\textbf\{SHUDHANSHU BADKUR\}/i);
+  const contactLineMatch = texContent.match(/Email:\s*([^|]+)\s*\|\s*Phone:\s*([^|]+)\s*\|\s*LinkedIn:\s*([^|]+)\s*\|\s*GitHub:\s*([^\n\\]+)/);
   const locationMatch = texContent.match(/Location:\s*([^\n\\]+)/);
 
   data.contact = {
     name: 'Shudhanshu Badkur',
-    email: emailMatch ? emailMatch[1].trim() : '',
-    phone: phoneMatch ? phoneMatch[1].trim() : '',
-    linkedin: linkedinMatch ? linkedinMatch[1].trim() : '',
-    github: githubMatch ? githubMatch[1].trim() : '',
+    email: contactLineMatch ? contactLineMatch[1].trim() : '',
+    phone: contactLineMatch ? contactLineMatch[2].trim() : '',
+    linkedin: contactLineMatch ? contactLineMatch[3].trim() : '',
+    github: contactLineMatch ? contactLineMatch[4].trim() : '',
     location: locationMatch ? locationMatch[1].trim() : ''
   };
 
-  // Extract Professional Summary
-  const summaryMatch = texContent.match(/\\section\*\{Professional Summary\}[\s\S]*?\\hrule[\s\S]*?\\vspace\{2pt\}[\s\S]*?([^\n]+(?:\n(?!\\vspace|\\section)[^\n]+)*)/);
+  // Extract Professional Summary - ATS format
+  const summaryMatch = texContent.match(/\\section\*\{PROFESSIONAL SUMMARY\}[\s\S]*?\n([^\n]+(?:\n(?!\\vspace|\\section)[^\n]+)*)/i);
   if (summaryMatch) {
     data.summary = summaryMatch[1]
+      .replace(/\\%/g, '%')
       .replace(/\s+/g, ' ')
       .trim();
   }
 
-  // Extract Technical Skills - better parsing
-  const skillsSection = texContent.match(/\\section\*\{Technical Skills\}[\s\S]*?\\section\*\{Professional Experience\}/);
+  // Extract Technical Skills - ATS format
+  const skillsSection = texContent.match(/\\section\*\{TECHNICAL SKILLS\}[\s\S]*?\\section\*\{PROFESSIONAL EXPERIENCE\}/i);
   if (skillsSection) {
     const skillsText = skillsSection[0];
     
-    // Extract each skill category - handle escaped ampersands
+    // Extract each skill category - ATS format with full names
     const skillPattern = /\\textbf\{([^}]+):\}\s*([^\\]+)/g;
     let match;
     while ((match = skillPattern.exec(skillsText)) !== null) {
@@ -81,58 +79,50 @@ function parseLaTeX(texContent) {
     }
   }
 
-  // Extract Professional Experience - improved parsing
-  const experienceSection = texContent.match(/\\section\*\{Professional Experience\}[\s\S]*?\\section\*\{Education/);
+  // Extract Professional Experience - ATS format
+  const experienceSection = texContent.match(/\\section\*\{PROFESSIONAL EXPERIENCE\}[\s\S]*?\\section\*\{EDUCATION/i);
   if (experienceSection) {
     const expText = experienceSection[0];
     
-    // Match each job entry - improved regex to include product/domain line
-    const jobPattern = /\\textbf\{([^}]+)\},\s*\\textit\{([^}]+)\}\s*\\\\\s*\\textit\{([^}]+)\}[\s\S]*?\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/g;
+    // Match each job entry - ATS-friendly format: Title | Company | Location \n Date \n Product/Domain
+    const jobPattern = /\\textbf\{([^}]+)\}\s*\|\s*([^|]+)\s*\|\s*([^\\]+)\s*\\\\\s*\\textit\{([^}]+)\}[\s\S]*?Product:\s*([^|]+)\s*\|\s*Domain:\s*([^\n\\]+)[\s\S]*?\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/g;
     let match;
     while ((match = jobPattern.exec(expText)) !== null) {
       const title = match[1].trim();
-      const companyLocationDate = match[2].trim();
-      const productDomain = match[3].trim();
+      const company = match[2].trim();
+      const location = match[3].trim();
+      const dateRange = match[4].trim();
+      const product = match[5].trim();
+      const domain = match[6].trim();
       
-      // Parse company, location, date
-      // Format: "Company, Location, Date Range"
-      // Need to handle cases like "Bengaluru, India" - split by last two commas
-      const parts = companyLocationDate.split(',').map(s => s.trim());
-      let company = parts[0] || '';
-      // Last part is date range, second-to-last is country, combine location parts
-      const dateRange = parts[parts.length - 1] || '';
-      const location = parts.slice(1, -1).join(', ') || '';
+      // Handle YC badge in company name
+      const ycMatch = company.match(/\(Y Combinator\s+([^)]+)\)/i) || company.match(/\(YC\s+([^)]+)\)/i);
+      let cleanCompany = company;
+      let isYC = false;
+      let ycBatch = null;
       
-      // Handle YC badge
-      const ycMatch = company.match(/\(YC\s+([^)]+)\)/);
-      const isYC = !!ycMatch;
       if (ycMatch) {
-        company = company.replace(/\s*\(YC[^)]+\)/, '').trim();
+        isYC = true;
+        ycBatch = ycMatch[1].trim();
+        cleanCompany = company.replace(/\s*\([^)]+\)/, '').trim();
       }
-      
-      // Parse product and domain from "Product: X | Domain: Y"
-      let product = '';
-      let domain = '';
-      const productMatch = productDomain.match(/Product:\s*([^|]+)/);
-      const domainMatch = productDomain.match(/Domain:\s*(.+)/);
-      if (productMatch) product = productMatch[1].trim();
-      if (domainMatch) domain = domainMatch[1].trim();
       
       // Extract responsibilities
       const responsibilities = [];
       const itemPattern = /\\item\s*([^\n]+(?:\n(?!\\item|\\end|\\vspace)[^\n]+)*)/g;
       let itemMatch;
-      while ((itemMatch = itemPattern.exec(match[4])) !== null) {
-        responsibilities.push(itemMatch[1].replace(/\s+/g, ' ').trim());
+      while ((itemMatch = itemPattern.exec(match[7])) !== null) {
+        let resp = itemMatch[1].replace(/\\%/g, '%').replace(/\s+/g, ' ').trim();
+        responsibilities.push(resp);
       }
 
       data.experience.push({
         title,
-        company,
+        company: cleanCompany,
         location,
         dateRange,
         isYC,
-        ycBatch: ycMatch ? ycMatch[1] : null,
+        ycBatch,
         product,
         domain,
         responsibilities
@@ -140,8 +130,8 @@ function parseLaTeX(texContent) {
     }
   }
 
-  // Extract Education and Certifications
-  const eduSection = texContent.match(/\\section\*\{Education and Certifications\}[\s\S]*?\\end\{document\}/);
+  // Extract Education and Certifications - ATS format
+  const eduSection = texContent.match(/\\section\*\{EDUCATION AND CERTIFICATIONS\}[\s\S]*?\\end\{document\}/i);
   if (eduSection) {
     const eduText = eduSection[0];
     
